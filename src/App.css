@@ -1,0 +1,120 @@
+#root {
+  min-height: 100vh;
+
+  margin: 0;
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+#display {
+  border: 1px solid white;
+  min-width: 600px;
+  min-height: calc(600px * 1.2941);
+  width: calc((80vh / 1.2941));
+  height: 80vh;
+}
+
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 25px;
+}
+
+#mainContainer {
+  display: flex;
+  gap: 80px;
+}
+
+.sectionContainer {
+  padding: 15px;
+  border: 1px solid white;
+  border-radius: 15px;
+}
+
+.collapsDiv {
+}
+
+.headerContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.dropdownLogo {
+  fill: white;
+  width: 60px;
+}
+
+input,
+textarea {
+  border-radius: 10px;
+  font-size: 24px;
+}
+
+.header {
+  font-size: 38px;
+}
+
+#left-side-container {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  width: 500px;
+}
+
+#description {
+  height: 180px;
+  white-space: pre-wrap;
+  overflow: auto;
+  vertical-align: top;
+}
+
+.saveAndCancelBtns {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.rotate {
+  transform: rotate(180deg); /* Rotate clockwise when collapsed */
+  transition: transform 0.3s; /* Add a transition for a smooth rotation effect */
+
+  /* When expanded, apply counterclockwise rotation */
+  &.expanded {
+    transform: rotate(0deg);
+  }
+}
