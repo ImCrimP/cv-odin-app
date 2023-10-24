@@ -1,51 +1,19 @@
 import "../App.css";
-import React from "react";
-import PropTypes from "prop-types";
+import useState from "react";
 
-export default function Display({
-  personInfo,
-  isPersonInfoSaved,
-  education,
-  isEducationInfoSaved,
-}) {
+export default function Display(props) {
+  const { name, email, phone, address } = props.data;
+
   return (
     <div id="display">
-      {isPersonInfoSaved && (
-        <div id="personalInfoContainer" className="sectionOfInputContainer">
-          <h1 id="nameDisplay">{personInfo.fullName}</h1>
-          <div id="infoNoName">
-            <p>{personInfo.email}</p>
-            <p>{personInfo.phoneNumber}</p>
-            <p>{personInfo.address}</p>
-          </div>
+      <div id="personalInfoContaienr">
+        <h1 id="NameDisplay">{name}</h1>
+        <div id="infoNoName">
+          <p>{email}</p>
+          <p>{phone}</p>
+          <p>{address}</p>
         </div>
-      )}
-
-      {isEducationInfoSaved && (
-        <div id="educationContainer" className="sectionOfInputContainer">
-          <h1 id="educationHeader">Education</h1>
-          {education.map((edu, index) => (
-            <div key={index} id={`educationEntry_${index}`}>
-              <p>{edu.school}</p>
-              <p>{edu.degree}</p>
-              <p>{edu.startDate}</p>
-              <p>{edu.endDate}</p>
-              <p>{edu.schoolAddress}</p>
-            </div>
-          ))}
-        </div>
-      )}
+      </div>
     </div>
   );
 }
-
-Display.propTypes = {
-  personInfo: PropTypes.object.isRequired,
-  isPersonInfoSaved: PropTypes.bool.isRequired,
-  education: PropTypes.array.isRequired,
-  isEducationInfoSaved: PropTypes.bool.isRequired,
-};
-
-Display.defaultProps = {
-  education: [],
-};

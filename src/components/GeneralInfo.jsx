@@ -1,39 +1,35 @@
 import "../App.css";
 import { useState } from "react";
-import PropTypes from "prop-types";
 
-export default function GeneralInfo({ onSave, onInputChange }) {
-  const [personInfo, setPersonInfo] = useState({
-    fullName: "",
-    email: "",
-    phoneNumber: "",
-    address: "",
-  });
+export default function GeneralInfo(props) {
+  const [name, setName] = useState(props.data.name);
+  const [email, setEmail] = useState(props.data.email);
+  const [phone, setPhone] = useState(props.data.phone);
+  const [address, setAddress] = useState(props.data.address);
 
-  const [isEdited, setIsEdited] = useState(false);
-
-  function handleInputChange(event) {
-    const { name, value } = event.target;
-    const newPersonInfo = { ...personInfo, [name]: value };
-    setPersonInfo(newPersonInfo);
-    setIsEdited(true);
-  }
-
-  const handleSave = () => {
-    onSave(personInfo);
-    setIsEdited(false);
+  const handleSubmit = () => {
+    const updatedData = {
+      name: name,
+      email: email,
+      phone: phone,
+      address: address,
+    };
+    console.log("updated data", updatedData);
+    props.onSubmit(updatedData);
+    console.log("props", props);
   };
 
   return (
     <div id="genInfoContainer" className="sectionContainer">
       <h1 className="header">Personal Info</h1>
       <div className="inputContainer">
-        <label htmlFor="fullName">Full Name</label>
+        <label htmlFor="name">Full Name</label>
         <input
           type="text"
-          name="fullName"
-          id="fullName"
-          onChange={handleInputChange}
+          value={name}
+          name="name"
+          id="name"
+          onChange={(e) => setName(e.target.value)}
         />
       </div>
 
@@ -43,7 +39,7 @@ export default function GeneralInfo({ onSave, onInputChange }) {
           type="email"
           name="email"
           id="email"
-          onChange={handleInputChange}
+          onChange={(e) => setEmail(e.target.value)}
         />
       </div>
 
@@ -53,7 +49,7 @@ export default function GeneralInfo({ onSave, onInputChange }) {
           type="tel"
           name="phoneNumber"
           id="phoneNumber"
-          onChange={handleInputChange}
+          onChange={(e) => setPhone(e.target.value)}
         />
       </div>
 
@@ -63,20 +59,11 @@ export default function GeneralInfo({ onSave, onInputChange }) {
           type="text"
           name="address"
           id="address"
-          onChange={handleInputChange}
+          onChange={(e) => setAddress(e.target.value)}
         />
       </div>
 
-      {isEdited ? (
-        <button className="saveCancel" onClick={handleSave}>
-          Save
-        </button>
-      ) : null}
+      <button onClick={handleSubmit}>Submit</button>
     </div>
   );
 }
-
-GeneralInfo.propTypes = {
-  onSave: PropTypes.func.isRequired,
-  onInputChange: PropTypes.func.isRequired,
-};
