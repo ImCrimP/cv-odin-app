@@ -1,7 +1,8 @@
 import "../App.css";
 import { useState } from "react";
+import PropTypes from "prop-types";
 
-export default function GeneralInfo() {
+export default function GeneralInfo({ onSave, onInputChange }) {
   const [personInfo, setPersonInfo] = useState({
     fullName: "",
     email: "",
@@ -9,12 +10,19 @@ export default function GeneralInfo() {
     address: "",
   });
 
+  const [isEdited, setIsEdited] = useState(false);
+
   function handleInputChange(event) {
     const { name, value } = event.target;
     const newPersonInfo = { ...personInfo, [name]: value };
     setPersonInfo(newPersonInfo);
-    console.log(newPersonInfo);
+    setIsEdited(true);
   }
+
+  const handleSave = () => {
+    onSave(personInfo);
+    setIsEdited(false);
+  };
 
   return (
     <div id="genInfoContainer" className="sectionContainer">
@@ -58,6 +66,17 @@ export default function GeneralInfo() {
           onChange={handleInputChange}
         />
       </div>
+
+      {isEdited ? (
+        <button className="saveCancel" onClick={handleSave}>
+          Save
+        </button>
+      ) : null}
     </div>
   );
 }
+
+GeneralInfo.propTypes = {
+  onSave: PropTypes.func.isRequired,
+  onInputChange: PropTypes.func.isRequired,
+};

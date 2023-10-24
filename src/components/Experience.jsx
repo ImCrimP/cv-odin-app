@@ -1,6 +1,7 @@
 import "../App.css";
 import { useState } from "react";
 import dropDownLogo from "../assets/dropdown.svg";
+import Display from "./Display";
 
 export default function Experience() {
   const [experience, setExperience] = useState({
@@ -115,7 +116,7 @@ export default function Experience() {
               </div>
             </div>
           ) : (
-            <button id="addNew" onClick={toggleAddNew}>
+            <button className="addNew" onClick={toggleAddNew}>
               Add New
             </button>
           )}
