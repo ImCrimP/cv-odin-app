@@ -23,6 +23,17 @@ function App() {
     },
   ]);
 
+  const [experienceData, setExperienceData] = useState([
+    {
+      company: "",
+      position: "",
+      companyAddress: "",
+      startDate: "",
+      endDate: "",
+      description: "",
+    },
+  ]);
+
   const handleGeneralInfoSubmit = (data) => {
     console.log("submitted data in app", data);
     setGeneralInfo(data);
@@ -30,6 +41,10 @@ function App() {
 
   const handleEducationChange = (data) => {
     setEducationData(data);
+  };
+
+  const handleExperienceData = (data) => {
+    setExperienceData(data);
   };
 
   return (
@@ -43,7 +58,10 @@ function App() {
           educationData={educationData}
           onEducationChange={handleEducationChange}
         />
-        <Experience />
+        <Experience
+          experienceData={experienceData}
+          onHandleExperienceData={handleExperienceData}
+        />
       </div>
 
       <Display data={generalInfoData} />

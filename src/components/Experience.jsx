@@ -2,34 +2,154 @@ import "../App.css";
 import { useState } from "react";
 import dropDownLogo from "../assets/dropdown.svg";
 import Display from "./Display";
+import { update } from "lodash";
 
-export default function Experience() {
-  const [experience, setExperience] = useState({
-    companyAddress: "",
+export default function Experience(props) {
+  const { experienceData, onHandleExperienceData } = props;
+
+  const [newExperience, setNewExperience] = useState({
+    company: "",
     position: "",
-    address: "",
+    companyAddress: "",
     startDate: "",
     endDate: "",
     description: "",
   });
 
   const [isExpanded, setIsExpanded] = useState(false);
-  const [isAddNewVisible, setIsAddNewVisible] = useState(false);
+  const [isAddingNew, setIsAddingNew] = useState(false);
+  const [savedExperiences, setSavedExperiences] = useState([]);
+  const [originalExperience, setOriginalExperience] = useState({});
+  const [editingIndex, setEditingIndex] = useState(null);
 
+  /*
   function handleExperienceChange(event) {
     const { name, value } = event.target;
-    const newExperience = { ...experience, [name]: value };
-    setExperience(newExperience);
+    const newExperience = { ...newExperience, [name]: value };
+    setNewExperience(newExperience);
     console.log(newExperience);
   }
+  */
 
   function toggleExpand() {
     setIsExpanded(!isExpanded);
-    setIsAddNewVisible(false); // Reset to hide "Add New" button when collapsing
   }
 
   function toggleAddNew() {
-    setIsAddNewVisible(!isAddNewVisible); // Show "Add New" button
+    setIsAddingNew(!isAddingNew); // Show "Add New" button
+  }
+
+  function handleSave() {
+    /*
+    const updatedExperienceData = [...experienceData, newExperience];
+    onHandleExperienceData(updatedExperienceData);
+    setSavedExperiences([...savedExperiences, newExperience]); // Store the saved education info
+    setNewExperience({
+      company: "",
+      position: "",
+      companyAddress: "",
+      startDate: "",
+      endDate: "",
+      description: "",
+    });
+    toggleAddNew();
+    */
+    if (editingIndex !== null) {
+      // Editing an existing experience
+      const updatedExperiences = [...savedExperiences];
+      updatedExperiences[editingIndex] = newExperience;
+      setSavedExperiences(updatedExperiences);
+      setEditingIndex(null);
+    } else {
+      // Adding a new experience
+      const updatedExperienceData = [...experienceData, newExperience];
+      onHandleExperienceData(updatedExperienceData);
+      setSavedExperiences([...savedExperiences, newExperience]);
+    }
+
+    setNewExperience({
+      company: "",
+      position: "",
+      companyAddress: "",
+      startDate: "",
+      endDate: "",
+      description: "",
+    });
+
+    setIsAddingNew(false);
+  }
+
+  function handleAddNew() {
+    const updatatedExperienceData = [...experienceData, newExperience];
+    onHandleExperienceData(updatatedExperienceData);
+    setNewExperience({
+      company: "",
+      position: "",
+      companyAddress: "",
+      startDate: "",
+      endDate: "",
+      description: "",
+    });
+    toggleAddNew();
+  }
+
+  function handleDelete(index) {
+    const updatedSavedExperiences = [...savedExperiences];
+    updatedSavedExperiences.splice(index, 1);
+    setSavedExperiences(updatedSavedExperiences);
+  }
+
+  function handleEdit(index) {
+    /*
+    // Retrieve the experience entry to be edited
+    const experienceToEdit = savedExperiences[index];
+    setEditingIndex(index);
+    setOriginalExperience(experienceToEdit);
+    // Set the form fields with the values from the selected experience entry
+    setNewExperience({
+      company: experienceToEdit.company,
+      position: experienceToEdit.position,
+      companyAddress: experienceToEdit.companyAddress,
+      startDate: experienceToEdit.startDate,
+      endDate: experienceToEdit.endDate,
+      description: experienceToEdit.description,
+    });
+
+    // Remove the selected experience entry from the savedExperience array
+    const updatedSavedExperiences = [...savedExperiences];
+    updatedSavedExperiences.splice(index, 1);
+    setSavedExperiences(updatedSavedExperiences);
+
+    // Set the 'isAddingNew' state to true to switch to edit mode
+    setIsAddingNew(false);
+    */
+    const experienceToEdit = savedExperiences[index];
+    setOriginalExperience(experienceToEdit);
+    setNewExperience({ ...experienceToEdit });
+    setEditingIndex(index);
+    setIsAddingNew(true);
+  }
+
+  function handleCancel() {
+    if (editingIndex !== null) {
+      // Restoring the original experience
+      const updatedExperiences = [...savedExperiences];
+      updatedExperiences[editingIndex] = originalExperience;
+      setSavedExperiences(updatedExperiences);
+      setEditingIndex(null);
+    }
+
+    setEditingIndex(null);
+    setOriginalExperience(null);
+    setNewExperience({
+      company: "",
+      position: "",
+      companyAddress: "",
+      startDate: "",
+      endDate: "",
+      description: "",
+    });
+    setIsAddingNew(false);
   }
 
   return (
@@ -44,16 +164,29 @@ export default function Experience() {
       </div>
 
       {isExpanded && (
-        <div>
-          {isAddNewVisible ? (
-            <div>
+        <div className="experience-entry">
+          <div className="buttonContainer">
+            {isAddingNew ? null : (
+              <button className="addNew" onClick={toggleAddNew}>
+                Add New
+              </button>
+            )}
+          </div>
+          {isAddingNew ? (
+            <div className="inputContainer">
               <div className="inputContainer">
                 <label htmlFor="company">Company Name</label>
                 <input
                   type="text"
                   name="company"
                   id="company"
-                  onChange={handleExperienceChange}
+                  value={newExperience.company}
+                  onChange={(e) =>
+                    setNewExperience({
+                      ...newExperience,
+                      company: e.target.value,
+                    })
+                  }
                 />
               </div>
 
@@ -63,7 +196,13 @@ export default function Experience() {
                   type="text"
                   name="position"
                   id="position"
-                  onChange={handleExperienceChange}
+                  value={newExperience.position}
+                  onChange={(e) =>
+                    setNewExperience({
+                      ...newExperience,
+                      position: e.target.value,
+                    })
+                  }
                 />
               </div>
 
@@ -73,7 +212,13 @@ export default function Experience() {
                   type="text"
                   name="companyAddress"
                   id="companyAddress"
-                  onChange={handleExperienceChange}
+                  value={newExperience.companyAddress}
+                  onChange={(e) =>
+                    setNewExperience({
+                      ...newExperience,
+                      companyAddress: e.target.value,
+                    })
+                  }
                 />
               </div>
 
@@ -83,7 +228,13 @@ export default function Experience() {
                   type="date"
                   name="startDate"
                   id="startDate"
-                  onChange={handleExperienceChange}
+                  value={newExperience.startDate}
+                  onChange={(e) =>
+                    setNewExperience({
+                      ...newExperience,
+                      startDate: e.target.value,
+                    })
+                  }
                 />
               </div>
 
@@ -93,7 +244,13 @@ export default function Experience() {
                   type="date"
                   name="endDate"
                   id="endDate"
-                  onChange={handleExperienceChange}
+                  value={newExperience.endDate}
+                  onChange={(e) =>
+                    setNewExperience({
+                      ...newExperience,
+                      endDate: e.target.value,
+                    })
+                  }
                 />
               </div>
 
@@ -104,21 +261,45 @@ export default function Experience() {
                   type="text"
                   name="description"
                   id="description"
-                  onChange={handleExperienceChange}
+                  value={newExperience.description}
+                  onChange={(e) =>
+                    setNewExperience({
+                      ...newExperience,
+                      description: e.target.value,
+                    })
+                  }
                 />
               </div>
 
-              <div className="saveAndCancelBtns">
-                <button className="saveCancel">Save</button>
-                <button className="saveCancel" onClick={toggleAddNew}>
+              <div>
+                <button className="saveButton" onClick={handleSave}>
+                  Save
+                </button>
+                <button className="cancelButton" onClick={handleCancel}>
                   Cancel
                 </button>
               </div>
             </div>
           ) : (
-            <button className="addNew" onClick={toggleAddNew}>
-              Add New
-            </button>
+            <div className="summaryContainer">
+              {savedExperiences.length > 0 &&
+                savedExperiences.map((savedExperiences, index) => (
+                  <div
+                    key={index}
+                    id={`education-summary${index}`}
+                    className="education-summary"
+                  >
+                    <p>{savedExperiences.company}</p>
+                    <p>{savedExperiences.position}</p>
+                    <p>{savedExperiences.companyAddress}</p>
+                    <p>{savedExperiences.startDate}</p>
+                    <p>{savedExperiences.endDate}</p>
+                    <p>{savedExperiences.description}</p>
+                    <button onClick={() => handleEdit(index)}>Edit</button>
+                    <button onClick={() => handleDelete(index)}>Delete</button>
+                  </div>
+                ))}
+            </div>
           )}
         </div>
       )}
