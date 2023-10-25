@@ -16,6 +16,7 @@ export default function Education(props) {
   });
 
   const [isAddingNew, setIsAddingNew] = useState(false);
+  const [savedEducation, setSavedEducations] = useState([]);
 
   function toggleExpand() {
     setIsExpanded(!isExpanded);
@@ -26,9 +27,22 @@ export default function Education(props) {
   }
 
   function handleSave(index) {
+    /*
     const updatedEducationData = [...educationData];
     updatedEducationData[index] = educationData[index];
     onEducationChange(updatedEducationData);
+    */
+    const updatedEducationData = [...educationData, newEducation];
+    onEducationChange(updatedEducationData);
+    setSavedEducations([...savedEducation, newEducation]); // Store the saved education info
+    setNewEducation({
+      school: "",
+      degree: "",
+      schoolAddress: "",
+      startDate: "",
+      endDate: "",
+    });
+    toggleAddNew();
   }
 
   function handleAddNew() {
@@ -45,7 +59,20 @@ export default function Education(props) {
     toggleAddNew();
   }
 
+  function handleDelete(index) {
+    const updatedSavedEducations = [...savedEducation];
+    updatedSavedEducations.splice(index, 1);
+    setSavedEducations(updatedSavedEducations);
+  }
+
   function handleCancel() {
+    setNewEducation({
+      school: "",
+      degree: "",
+      schoolAddress: "",
+      startDate: "",
+      endDate: "",
+    });
     setIsAddingNew(false);
   }
 
@@ -68,7 +95,7 @@ export default function Education(props) {
               </button>
             )}
           </div>
-          {isAddingNew && (
+          {isAddingNew ? (
             <div className="inputContainer">
               <div className="inputContainer">
                 <label htmlFor="school">School</label>
@@ -89,6 +116,7 @@ export default function Education(props) {
                   type="text"
                   name="degree"
                   id="degree"
+                  value={newEducation.degree}
                   onChange={(e) =>
                     setNewEducation({ ...newEducation, degree: e.target.value })
                   }
@@ -101,6 +129,7 @@ export default function Education(props) {
                   type="text"
                   name="schoolAddress"
                   id="schoolAddress"
+                  value={newEducation.schoolAddress}
                   onChange={(e) =>
                     setNewEducation({
                       ...newEducation,
@@ -116,6 +145,7 @@ export default function Education(props) {
                   type="date"
                   name="startDate"
                   id="startDate"
+                  value={newEducation.startDate}
                   onChange={(e) =>
                     setNewEducation({
                       ...newEducation,
@@ -131,6 +161,7 @@ export default function Education(props) {
                   type="date"
                   name="endDate"
                   id="endDate"
+                  value={newEducation.endDate}
                   onChange={(e) =>
                     setNewEducation({
                       ...newEducation,
@@ -139,22 +170,34 @@ export default function Education(props) {
                   }
                 />
               </div>
-              <>
-                <button className="saveButton" onClick={handleAddNew}>
+              <div>
+                <button className="saveButton" onClick={handleSave}>
                   Save
                 </button>
                 <button className="cancelButton" onClick={handleCancel}>
                   Cancel
                 </button>
-              </>
+              </div>
+            </div>
+          ) : (
+            <div className="summaryContainer">
+              {savedEducation.length > 0 &&
+                savedEducation.map((savedEducation, index) => (
+                  <div
+                    key={index}
+                    id={`education-summary${index}`}
+                    className="education-summary"
+                  >
+                    <p>School: {savedEducation.school}</p>
+                    <p>Degree: {savedEducation.degree}</p>
+                    <p>Address: {savedEducation.schoolAddress}</p>
+                    <p>Start Date: {savedEducation.startDate}</p>
+                    <p>End Date: {savedEducation.endDate}</p>
+                    <button onClick={() => handleDelete(index)}>Delete</button>
+                  </div>
+                ))}
             </div>
           )}
-          {educationData.map((educationEntry, index) => (
-            <div key={index} className="education-entry">
-              {/* Input fields for education properties */}
-              <div className="buttonContainer"></div>
-            </div>
-          ))}
         </div>
       )}
     </div>
