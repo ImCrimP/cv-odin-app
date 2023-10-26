@@ -11,8 +11,8 @@ export default function Experience(props) {
     company: "",
     position: "",
     companyAddress: "",
-    startDate: "",
-    endDate: "",
+    experienceStartDate: "",
+    experienceEndDate: "",
     description: "",
   });
 
@@ -48,8 +48,8 @@ export default function Experience(props) {
       company: "",
       position: "",
       companyAddress: "",
-      startDate: "",
-      endDate: "",
+      experienceStartDate: "",
+      experienceEndDate: "",
       description: "",
     });
     toggleAddNew();
@@ -71,8 +71,8 @@ export default function Experience(props) {
       company: "",
       position: "",
       companyAddress: "",
-      startDate: "",
-      endDate: "",
+      experienceStartDate: "",
+      experienceEndDate: "",
       description: "",
     });
 
@@ -86,8 +86,8 @@ export default function Experience(props) {
       company: "",
       position: "",
       companyAddress: "",
-      startDate: "",
-      endDate: "",
+      experienceStartDate: "",
+      experienceEndDate: "",
       description: "",
     });
     toggleAddNew();
@@ -110,8 +110,8 @@ export default function Experience(props) {
       company: experienceToEdit.company,
       position: experienceToEdit.position,
       companyAddress: experienceToEdit.companyAddress,
-      startDate: experienceToEdit.startDate,
-      endDate: experienceToEdit.endDate,
+      experienceStartDate: experienceToEdit.experienceStartDate,
+      experienceEndDate: experienceToEdit.experienceEndDate,
       description: experienceToEdit.description,
     });
 
@@ -128,6 +128,8 @@ export default function Experience(props) {
     setNewExperience({ ...experienceToEdit });
     setEditingIndex(index);
     setIsAddingNew(true);
+
+    props.onEdit(updatedExperienceData);
   }
 
   function handleCancel() {
@@ -145,8 +147,8 @@ export default function Experience(props) {
       company: "",
       position: "",
       companyAddress: "",
-      startDate: "",
-      endDate: "",
+      experienceStartDate: "",
+      experienceEndDate: "",
       description: "",
     });
     setIsAddingNew(false);
@@ -223,32 +225,32 @@ export default function Experience(props) {
               </div>
 
               <div className="inputContainer">
-                <label htmlFor="startDate">Start Date</label>
+                <label htmlFor="experienceStartDate">Start Date</label>
                 <input
                   type="date"
-                  name="startDate"
-                  id="startDate"
-                  value={newExperience.startDate}
+                  name="experienceStartDate"
+                  id="experienceStartDate"
+                  value={newExperience.experienceStartDate}
                   onChange={(e) =>
                     setNewExperience({
                       ...newExperience,
-                      startDate: e.target.value,
+                      experienceStartDate: e.target.value,
                     })
                   }
                 />
               </div>
 
               <div className="inputContainer">
-                <label htmlFor="endDate">End Date</label>
+                <label htmlFor="experienceEndDate">End Date</label>
                 <input
                   type="date"
-                  name="endDate"
-                  id="endDate"
-                  value={newExperience.endDate}
+                  name="experienceEndDate"
+                  id="experienceEndDate"
+                  value={newExperience.experienceEndDate}
                   onChange={(e) =>
                     setNewExperience({
                       ...newExperience,
-                      endDate: e.target.value,
+                      experienceEndDate: e.target.value,
                     })
                   }
                 />
@@ -292,8 +294,8 @@ export default function Experience(props) {
                     <p>{savedExperiences.company}</p>
                     <p>{savedExperiences.position}</p>
                     <p>{savedExperiences.companyAddress}</p>
-                    <p>{savedExperiences.startDate}</p>
-                    <p>{savedExperiences.endDate}</p>
+                    <p>{savedExperiences.experienceStartDate}</p>
+                    <p>{savedExperiences.experienceEndDate}</p>
                     <p>{savedExperiences.description}</p>
                     <button onClick={() => handleEdit(index)}>Edit</button>
                     <button onClick={() => handleDelete(index)}>Delete</button>

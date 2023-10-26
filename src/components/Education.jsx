@@ -4,15 +4,18 @@ import dropDownLogo from "../assets/dropdown.svg";
 import Display from "./Display";
 
 export default function Education(props) {
-  const { educationData, onEducationChange } = props;
+  //const { educationData, onEducationChange } = props;
+  const { educationData: initialEducationData, onEducationChange } = props;
 
   const [newEducation, setNewEducation] = useState({
     school: "",
     degree: "",
     schoolAddress: "",
-    startDate: "",
-    endDate: "",
+    schoolStartDate: "",
+    schoolEndDate: "",
   });
+
+  const [educationData, setEducationData] = useState(initialEducationData);
 
   const [isExpanded, setIsExpanded] = useState(false);
   const [isAddingNew, setIsAddingNew] = useState(false);
@@ -34,6 +37,28 @@ export default function Education(props) {
     updatedEducationData[index] = educationData[index];
     onEducationChange(updatedEducationData);
     */
+    if (editingIndex !== null) {
+      // Editing an existing education entry
+      const updatedEducationData = [...educationData];
+      updatedEducationData[editingIndex] = newEducation;
+      onEducationChange(updatedEducationData);
+      setEditingIndex(null);
+    } else {
+      // Adding a new education entry
+      const updatedEducationData = [...educationData, newEducation];
+      onEducationChange(updatedEducationData);
+    }
+
+    const updatedData = {
+      school: school.value,
+      degree: degree.value,
+      schoolAddress: schoolAddress.value,
+      schoolStartDate: schoolStartDate.value,
+      schoolEndDate: schoolEndDate.value,
+    };
+    console.log("updated data", updatedData);
+    props.onEducationChange(savedEducation);
+    console.log("props", props);
     const updatedEducationData = [...educationData, newEducation];
     onEducationChange(updatedEducationData);
     setSavedEducations([...savedEducation, newEducation]); // Store the saved education info
@@ -41,21 +66,23 @@ export default function Education(props) {
       school: "",
       degree: "",
       schoolAddress: "",
-      startDate: "",
-      endDate: "",
+      schoolStartDate: "",
+      schoolEndDate: "",
     });
+    setEducationData(updatedEducationData);
     toggleAddNew();
   }
 
   function handleAddNew() {
     const updatedEducationData = [...educationData, newEducation];
+    setEducationData(updatedEducationData);
     onEducationChange(updatedEducationData);
     setNewEducation({
       school: "",
       degree: "",
       schoolAddress: "",
-      startDate: "",
-      endDate: "",
+      schoolStartDate: "",
+      schoolEndDate: "",
     });
     console.log(updatedEducationData);
     toggleAddNew();
@@ -73,13 +100,14 @@ export default function Education(props) {
     setEditingIndex(index);
     setOriginalEducation(educationToEdit);
     // Set the form fields with the values from the selected education entry
-    setNewEducation({
+    /*setNewEducation({
       school: educationToEdit.school,
       degree: educationToEdit.degree,
       schoolAddress: educationToEdit.schoolAddress,
-      startDate: educationToEdit.startDate,
-      endDate: educationToEdit.endDate,
-    });
+      schoolStartDate: educationToEdit.schoolStartDate,
+      schoolEndDate: educationToEdit.schoolEndDate,
+    });*/
+    setNewEducation(educationData.index);
 
     // Remove the selected education entry from the savedEducations array
     const updatedSavedEducations = [...savedEducation];
@@ -98,14 +126,14 @@ export default function Education(props) {
       school: "",
       degree: "",
       schoolAddress: "",
-      startDate: "",
-      endDate: "",
+      schoolStartDate: "",
+      schoolEndDate: "",
      
       school: educationToEdit.school,
       degree: educationToEdit.degree,
       schoolAddress: educationToEdit.schoolAddress,
-      startDate: educationToEdit.startDate,
-      endDate: educationToEdit.endDate,
+      schoolStartDate: educationToEdit.schoolStartDate,
+      schoolEndDate: educationToEdit.schoolEndDate,
     });
     setIsAddingNew(false);
      */
@@ -123,8 +151,8 @@ export default function Education(props) {
       school: "",
       degree: "",
       schoolAddress: "",
-      startDate: "",
-      endDate: "",
+      schoolStartDate: "",
+      schoolEndDate: "",
     });
     setIsAddingNew(false);
   }
@@ -193,32 +221,32 @@ export default function Education(props) {
               </div>
 
               <div className="inputContainer">
-                <label htmlFor="startDate">Start Date</label>
+                <label htmlFor="schoolStartDate">Start Date</label>
                 <input
                   type="date"
-                  name="startDate"
-                  id="startDate"
-                  value={newEducation.startDate}
+                  name="schoolStartDate"
+                  id="schoolStartDate"
+                  value={newEducation.schoolStartDate}
                   onChange={(e) =>
                     setNewEducation({
                       ...newEducation,
-                      startDate: e.target.value,
+                      schoolStartDate: e.target.value,
                     })
                   }
                 />
               </div>
 
               <div className="inputContainer">
-                <label htmlFor="endDate">End Date</label>
+                <label htmlFor="schoolEndDate">End Date</label>
                 <input
                   type="date"
-                  name="endDate"
-                  id="endDate"
-                  value={newEducation.endDate}
+                  name="schoolEndDate"
+                  id="schoolEndDate"
+                  value={newEducation.schoolEndDate}
                   onChange={(e) =>
                     setNewEducation({
                       ...newEducation,
-                      endDate: e.target.value,
+                      schoolEndDate: e.target.value,
                     })
                   }
                 />
@@ -244,8 +272,8 @@ export default function Education(props) {
                     <p>{savedEducation.school}</p>
                     <p>{savedEducation.degree}</p>
                     <p>{savedEducation.schoolAddress}</p>
-                    <p>{savedEducation.startDate}</p>
-                    <p>{savedEducation.endDate}</p>
+                    <p>{savedEducation.schoolStartDate}</p>
+                    <p>{savedEducation.schoolEndDate}</p>
                     <button onClick={() => handleEdit(index)}>Edit</button>
                     <button onClick={() => handleDelete(index)}>Delete</button>
                   </div>

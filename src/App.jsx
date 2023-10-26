@@ -18,21 +18,27 @@ function App() {
       school: "",
       degree: "",
       schoolAddress: "",
-      startDate: "",
-      endDate: "",
+      schoolStartDate: "",
+      schoolEndDate: "",
     },
   ]);
+  /*  
+  
+*/
 
   const [experienceData, setExperienceData] = useState([
     {
       company: "",
       position: "",
       companyAddress: "",
-      startDate: "",
-      endDate: "",
+      experienceStartDate: "",
+      experienceEndDate: "",
       description: "",
     },
   ]);
+  /*  
+  
+    */
 
   const handleGeneralInfoSubmit = (data) => {
     console.log("submitted data in app", data);
@@ -45,6 +51,14 @@ function App() {
 
   const handleExperienceData = (data) => {
     setExperienceData(data);
+  };
+
+  const updateEducationDate = (updatedData) => {
+    setEducationData(updatedData);
+  };
+
+  const updatedExperienceData = (updatedData) => {
+    setExperienceData(updatedData);
   };
 
   return (
@@ -64,7 +78,11 @@ function App() {
         />
       </div>
 
-      <Display data={generalInfoData} />
+      <Display
+        data={generalInfoData}
+        educationData={educationData}
+        experienceData={experienceData}
+      />
     </div>
   );
 }

@@ -63,7 +63,7 @@ export default function GeneralInfo(props) {
         />
       </div>
 
-      <button onClick={handleSubmit}>Submit</button>
+      <button onClick={handleSubmit}>Save</button>
     </div>
   );
 }
