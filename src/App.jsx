@@ -13,17 +13,15 @@ function App() {
     address: "",
   });
 
-  const [educationData, setEducationData] = useState([
-    {
+  const [educationData, setEducationData] = useState([]);
+  /*  
+  {
       school: "",
       degree: "",
       schoolAddress: "",
       schoolStartDate: "",
       schoolEndDate: "",
     },
-  ]);
-  /*  
-  
 */
 
   const [experienceData, setExperienceData] = useState([
@@ -41,15 +39,17 @@ function App() {
     */
 
   const handleGeneralInfoSubmit = (data) => {
-    console.log("submitted data in app", data);
+    console.log("submitted personal info", data);
     setGeneralInfo(data);
   };
 
   const handleEducationChange = (data) => {
+    console.log("submitted education", data);
     setEducationData(data);
   };
 
   const handleExperienceData = (data) => {
+    console.log("submitted experience", data);
     setExperienceData(data);
   };
 

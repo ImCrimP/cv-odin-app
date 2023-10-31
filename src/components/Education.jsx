@@ -5,7 +5,7 @@ import Display from "./Display";
 
 export default function Education(props) {
   //const { educationData, onEducationChange } = props;
-  const { educationData: initialEducationData, onEducationChange } = props;
+  const { educationData, onEducationChange } = props;
 
   const [newEducation, setNewEducation] = useState({
     school: "",
@@ -15,7 +15,7 @@ export default function Education(props) {
     schoolEndDate: "",
   });
 
-  const [educationData, setEducationData] = useState(initialEducationData);
+  //const [educationData, setEducationData] = useState(initialEducationData);
 
   const [isExpanded, setIsExpanded] = useState(false);
   const [isAddingNew, setIsAddingNew] = useState(false);
@@ -28,40 +28,36 @@ export default function Education(props) {
   }
 
   function toggleAddNew() {
-    setIsAddingNew(!isAddingNew);
+    setIsAddingNew(true); // Indicate that you're adding a new entry
+    setEditingIndex(null); // Reset the editing index
   }
 
   function handleSave() {
-    /*
-    const updatedEducationData = [...educationData];
-    updatedEducationData[index] = educationData[index];
-    onEducationChange(updatedEducationData);
-    */
     if (editingIndex !== null) {
       // Editing an existing education entry
       const updatedEducationData = [...educationData];
       updatedEducationData[editingIndex] = newEducation;
       onEducationChange(updatedEducationData);
-      setEditingIndex(null);
+
+      const updatedSavedEducations = [...savedEducation];
+      updatedSavedEducations[editingIndex] = newEducation;
+      setSavedEducations(updatedSavedEducations);
     } else {
-      // Adding a new education entry
-      const updatedEducationData = [...educationData, newEducation];
+      // Add a new education entry
+      const newEducationEntry = {
+        school: newEducation.school,
+        degree: newEducation.degree,
+        schoolAddress: newEducation.schoolAddress,
+        schoolStartDate: newEducation.schoolStartDate,
+        schoolEndDate: newEducation.schoolEndDate,
+      };
+
+      const updatedEducationData = [...educationData, newEducationEntry];
       onEducationChange(updatedEducationData);
+      setSavedEducations([...savedEducation, newEducationEntry]); // Update savedEducation
     }
 
-    const updatedData = {
-      school: school.value,
-      degree: degree.value,
-      schoolAddress: schoolAddress.value,
-      schoolStartDate: schoolStartDate.value,
-      schoolEndDate: schoolEndDate.value,
-    };
-    console.log("updated data", updatedData);
-    props.onEducationChange(savedEducation);
-    console.log("props", props);
-    const updatedEducationData = [...educationData, newEducation];
-    onEducationChange(updatedEducationData);
-    setSavedEducations([...savedEducation, newEducation]); // Store the saved education info
+    // Clear the form fields and exit edit mode
     setNewEducation({
       school: "",
       degree: "",
@@ -69,29 +65,69 @@ export default function Education(props) {
       schoolStartDate: "",
       schoolEndDate: "",
     });
-    setEducationData(updatedEducationData);
-    toggleAddNew();
+
+    setIsAddingNew(false);
   }
 
   function handleAddNew() {
-    const updatedEducationData = [...educationData, newEducation];
-    setEducationData(updatedEducationData);
+    /*
+    // Create a new education object based on user input
+    const newEducationEntry = {
+      school: newEducation.school,
+      degree: newEducation.degree,
+      schoolAddress: newEducation.schoolAddress,
+      schoolStartDate: newEducation.schoolStartDate,
+      schoolEndDate: newEducation.schoolEndDate,
+    };
+    console.log(newEducationEntry);
+
+    // Update the education data and saved educations
+    const updatedEducationData = [...educationData, newEducationEntry];
+    const updatedSavedEducations = [...savedEducation, newEducationEntry];
+    console.log("add btn data", updatedEducationData);
+
     onEducationChange(updatedEducationData);
+    setSavedEducations(updatedSavedEducations);
+
+    // Clear the form fields
     setNewEducation({
       school: "",
       degree: "",
       schoolAddress: "",
       schoolStartDate: "",
       schoolEndDate: "",
-    });
-    console.log(updatedEducationData);
+    });*/
     toggleAddNew();
   }
+
+  /*
+  function handleAddNew() {
+    const updatedEducationData = [...educationData, newEducation];
+    const updatedSavedEducations = [...savedEducation, newEducation];
+    console.log("updated education data", newEducation);
+    onEducationChange(updatedEducationData);
+    setSavedEducations(updatedSavedEducations);
+
+    // Clear the form fields
+    setNewEducation({
+      school: newEducation.school,
+      degree: newEducation.degree,
+      schoolAddress: newEducation.schoolAddress,
+      schoolStartDate: newEducation.schoolStartDate,
+      schoolEndDate: newEducation.schoolEndDate,
+    });
+    toggleAddNew();
+  }*/
 
   function handleDelete(index) {
     const updatedSavedEducations = [...savedEducation];
     updatedSavedEducations.splice(index, 1);
     setSavedEducations(updatedSavedEducations);
+
+    // Update the educationData and pass it to the parent component
+    const updatedEducationData = [...educationData];
+    updatedEducationData.splice(index, 1);
+    onEducationChange(updatedEducationData);
   }
 
   function handleEdit(index) {
@@ -99,15 +135,15 @@ export default function Education(props) {
     const educationToEdit = savedEducation[index];
     setEditingIndex(index);
     setOriginalEducation(educationToEdit);
+
     // Set the form fields with the values from the selected education entry
-    /*setNewEducation({
+    setNewEducation({
       school: educationToEdit.school,
       degree: educationToEdit.degree,
       schoolAddress: educationToEdit.schoolAddress,
       schoolStartDate: educationToEdit.schoolStartDate,
       schoolEndDate: educationToEdit.schoolEndDate,
-    });*/
-    setNewEducation(educationData.index);
+    });
 
     // Remove the selected education entry from the savedEducations array
     const updatedSavedEducations = [...savedEducation];
@@ -116,28 +152,68 @@ export default function Education(props) {
 
     // Set the 'isAddingNew' state to true to switch to edit mode
     setIsAddingNew(true);
+
+    /*
+    // Retrieve the education entry to be edited
+    const educationToEdit = savedEducation[index];
+    console.log("Editing education at index", index);
+    console.log("Education to edit:", educationToEdit);
+
+    setEditingIndex(index);
+    console.log("Editing index set to:", index);
+
+    setOriginalEducation(educationToEdit);
+    console.log("Original education set to:", educationToEdit);
+
+    // Set the form fields with the values from the selected education entry
+    setNewEducation(educationToEdit);
+    //console.log("New education set to:", educationToEdit);
+
+    // Remove the selected education entry from the savedEducations array
+    const updatedSavedEducations = [...savedEducation];
+    updatedSavedEducations.splice(index, 1);
+    const updatedEducationData = [...educationData];
+    updatedEducationData[editingIndex] = newEducation;
+    onEducationChange(updatedEducationData);
+    setEditingIndex(null);
+    setSavedEducations(updatedSavedEducations);
+    console.log("Saved educations after removal:", updatedSavedEducations);
+
+    // Set the 'isAddingNew' state to true to switch to edit mode
+    setIsAddingNew(true);
+    console.log("Switching to edit mode");
+
+    // Editing an existing education entry
+    */
   }
 
-  function handleCancel() {
-    /*
+  /*function handleEdit(index) {
+    // Retrieve the education entry to be edited
     const educationToEdit = savedEducation[index];
+    setEditingIndex(index);
+    setOriginalEducation(educationToEdit);
+    // Set the form fields with the values from the selected education entry
     setNewEducation({
-      
-      school: "",
-      degree: "",
-      schoolAddress: "",
-      schoolStartDate: "",
-      schoolEndDate: "",
-     
       school: educationToEdit.school,
       degree: educationToEdit.degree,
       schoolAddress: educationToEdit.schoolAddress,
       schoolStartDate: educationToEdit.schoolStartDate,
       schoolEndDate: educationToEdit.schoolEndDate,
     });
-    setIsAddingNew(false);
-     */
 
+    //setNewEducation(educationData.index);
+    setNewEducation(educationToEdit);
+
+    // Remove the selected education entry from the savedEducations array
+    const updatedSavedEducations = [...savedEducation];
+    updatedSavedEducations.splice(index, 1);
+    setSavedEducations(updatedSavedEducations);
+
+    // Set the 'isAddingNew' state to true to switch to edit mode
+    setIsAddingNew(true);
+  }*/
+
+  function handleCancel() {
     if (editingIndex !== null) {
       const updatedEducations = [...savedEducation];
       updatedEducations[editingIndex] = originalEducation;
@@ -171,7 +247,7 @@ export default function Education(props) {
         <div className="education-entry">
           <div className="buttonContainer">
             {isAddingNew ? null : (
-              <button className="addNew" onClick={toggleAddNew}>
+              <button className="addNew" onClick={handleAddNew}>
                 Add New
               </button>
             )}

@@ -2,8 +2,7 @@ import "../App.css";
 import useState from "react";
 
 export default function Display(props) {
-  const { name, email, phone, address, educationData, experienceData } =
-    props.data;
+  const { name, email, phone, address, educationData, experienceData } = props;
 
   /*
 <p>
