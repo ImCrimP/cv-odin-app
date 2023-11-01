@@ -40,33 +40,33 @@ export default function Experience(props) {
   }
 
   function handleSave() {
-    /*
-    const updatedExperienceData = [...experienceData, newExperience];
-    onHandleExperienceData(updatedExperienceData);
-    setSavedExperiences([...savedExperiences, newExperience]); // Store the saved education info
-    setNewExperience({
-      company: "",
-      position: "",
-      companyAddress: "",
-      experienceStartDate: "",
-      experienceEndDate: "",
-      description: "",
-    });
-    toggleAddNew();
-    */
     if (editingIndex !== null) {
-      // Editing an existing experience
+      // Editing an existing experience entry
       const updatedExperiences = [...savedExperiences];
       updatedExperiences[editingIndex] = newExperience;
       setSavedExperiences(updatedExperiences);
       setEditingIndex(null);
-    } else {
-      // Adding a new experience
-      const updatedExperienceData = [...experienceData, newExperience];
+
+      const updatedExperienceData = [...experienceData];
+      updatedExperienceData[editingIndex] = newExperience;
       onHandleExperienceData(updatedExperienceData);
-      setSavedExperiences([...savedExperiences, newExperience]);
+    } else {
+      // Adding a new experience entry
+      const newExperienceEntry = {
+        company: newExperience.company,
+        position: newExperience.position,
+        companyAddress: newExperience.companyAddress,
+        experienceStartDate: newExperience.experienceStartDate,
+        experienceEndDate: newExperience.experienceEndDate,
+        description: newExperience.description,
+      };
+
+      const updatedExperienceData = [...experienceData, newExperienceEntry];
+      onHandleExperienceData(updatedExperienceData);
+      setSavedExperiences([...savedExperiences, newExperienceEntry]);
     }
 
+    // Reset the newExperience state and exit the "add new" mode
     setNewExperience({
       company: "",
       position: "",
@@ -75,21 +75,10 @@ export default function Experience(props) {
       experienceEndDate: "",
       description: "",
     });
-
     setIsAddingNew(false);
   }
 
   function handleAddNew() {
-    const updatatedExperienceData = [...experienceData, newExperience];
-    onHandleExperienceData(updatatedExperienceData);
-    setNewExperience({
-      company: "",
-      position: "",
-      companyAddress: "",
-      experienceStartDate: "",
-      experienceEndDate: "",
-      description: "",
-    });
     toggleAddNew();
   }
 
@@ -97,39 +86,35 @@ export default function Experience(props) {
     const updatedSavedExperiences = [...savedExperiences];
     updatedSavedExperiences.splice(index, 1);
     setSavedExperiences(updatedSavedExperiences);
+
+    const updatedExperienceData = [...experienceData];
+    updatedExperienceData.splice(index, 1);
+    onHandleExperienceData(updatedExperienceData);
   }
 
   function handleEdit(index) {
-    /*
-    // Retrieve the experience entry to be edited
-    const experienceToEdit = savedExperiences[index];
-    setEditingIndex(index);
-    setOriginalExperience(experienceToEdit);
-    // Set the form fields with the values from the selected experience entry
-    setNewExperience({
-      company: experienceToEdit.company,
-      position: experienceToEdit.position,
-      companyAddress: experienceToEdit.companyAddress,
-      experienceStartDate: experienceToEdit.experienceStartDate,
-      experienceEndDate: experienceToEdit.experienceEndDate,
-      description: experienceToEdit.description,
-    });
+    // Ensure that the index is within the range of saved experiences
+    if (index >= 0 && index < savedExperiences.length) {
+      const experienceToEdit = savedExperiences[index];
+      setOriginalExperience(experienceToEdit);
 
-    // Remove the selected experience entry from the savedExperience array
-    const updatedSavedExperiences = [...savedExperiences];
-    updatedSavedExperiences.splice(index, 1);
-    setSavedExperiences(updatedSavedExperiences);
+      // Update individual input field states based on the experience being edited
+      setNewExperience({
+        company: experienceToEdit.company,
+        position: experienceToEdit.position,
+        companyAddress: experienceToEdit.companyAddress,
+        experienceStartDate: experienceToEdit.experienceStartDate,
+        experienceEndDate: experienceToEdit.experienceEndDate,
+        description: experienceToEdit.description,
+      });
 
-    // Set the 'isAddingNew' state to true to switch to edit mode
-    setIsAddingNew(false);
-    */
-    const experienceToEdit = savedExperiences[index];
-    setOriginalExperience(experienceToEdit);
-    setNewExperience({ ...experienceToEdit });
-    setEditingIndex(index);
-    setIsAddingNew(true);
+      const updatedSavedExperiences = [...savedExperiences];
+      updatedSavedExperiences.splice(index, 1);
+      setSavedExperiences(updatedSavedExperiences);
 
-    props.onEdit(updatedExperienceData);
+      setEditingIndex(index);
+      setIsAddingNew(true);
+    }
   }
 
   function handleCancel() {
@@ -284,19 +269,15 @@ export default function Experience(props) {
             </div>
           ) : (
             <div className="summaryContainer">
-              {savedExperiences.length > 0 &&
-                savedExperiences.map((savedExperiences, index) => (
-                  <div
-                    key={index}
-                    id={`education-summary${index}`}
-                    className="education-summary"
-                  >
-                    <p>{savedExperiences.company}</p>
-                    <p>{savedExperiences.position}</p>
-                    <p>{savedExperiences.companyAddress}</p>
-                    <p>{savedExperiences.experienceStartDate}</p>
-                    <p>{savedExperiences.experienceEndDate}</p>
-                    <p>{savedExperiences.description}</p>
+              {experienceData.length > 0 &&
+                experienceData.map((experience, index) => (
+                  <div key={index} className="education-summary">
+                    <p>{experience.company}</p>
+                    <p>{experience.position}</p>
+                    <p>{experience.companyAddress}</p>
+                    <p>{experience.experienceStartDate}</p>
+                    <p>{experience.experienceEndDate}</p>
+                    <p>{experience.description}</p>
                     <button onClick={() => handleEdit(index)}>Edit</button>
                     <button onClick={() => handleDelete(index)}>Delete</button>
                   </div>

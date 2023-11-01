@@ -6,6 +6,7 @@ export default function Display(props) {
   const { name, email, phone, address, educationData, experienceData } = props;
 
   console.log(name, email, phone, address);
+  console.log(experienceData);
 
   return (
     <div id="display">
