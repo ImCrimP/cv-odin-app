@@ -70,54 +70,8 @@ export default function Education(props) {
   }
 
   function handleAddNew() {
-    /*
-    // Create a new education object based on user input
-    const newEducationEntry = {
-      school: newEducation.school,
-      degree: newEducation.degree,
-      schoolAddress: newEducation.schoolAddress,
-      schoolStartDate: newEducation.schoolStartDate,
-      schoolEndDate: newEducation.schoolEndDate,
-    };
-    console.log(newEducationEntry);
-
-    // Update the education data and saved educations
-    const updatedEducationData = [...educationData, newEducationEntry];
-    const updatedSavedEducations = [...savedEducation, newEducationEntry];
-    console.log("add btn data", updatedEducationData);
-
-    onEducationChange(updatedEducationData);
-    setSavedEducations(updatedSavedEducations);
-
-    // Clear the form fields
-    setNewEducation({
-      school: "",
-      degree: "",
-      schoolAddress: "",
-      schoolStartDate: "",
-      schoolEndDate: "",
-    });*/
     toggleAddNew();
   }
-
-  /*
-  function handleAddNew() {
-    const updatedEducationData = [...educationData, newEducation];
-    const updatedSavedEducations = [...savedEducation, newEducation];
-    console.log("updated education data", newEducation);
-    onEducationChange(updatedEducationData);
-    setSavedEducations(updatedSavedEducations);
-
-    // Clear the form fields
-    setNewEducation({
-      school: newEducation.school,
-      degree: newEducation.degree,
-      schoolAddress: newEducation.schoolAddress,
-      schoolStartDate: newEducation.schoolStartDate,
-      schoolEndDate: newEducation.schoolEndDate,
-    });
-    toggleAddNew();
-  }*/
 
   function handleDelete(index) {
     const updatedSavedEducations = [...savedEducation];
@@ -152,66 +106,7 @@ export default function Education(props) {
 
     // Set the 'isAddingNew' state to true to switch to edit mode
     setIsAddingNew(true);
-
-    /*
-    // Retrieve the education entry to be edited
-    const educationToEdit = savedEducation[index];
-    console.log("Editing education at index", index);
-    console.log("Education to edit:", educationToEdit);
-
-    setEditingIndex(index);
-    console.log("Editing index set to:", index);
-
-    setOriginalEducation(educationToEdit);
-    console.log("Original education set to:", educationToEdit);
-
-    // Set the form fields with the values from the selected education entry
-    setNewEducation(educationToEdit);
-    //console.log("New education set to:", educationToEdit);
-
-    // Remove the selected education entry from the savedEducations array
-    const updatedSavedEducations = [...savedEducation];
-    updatedSavedEducations.splice(index, 1);
-    const updatedEducationData = [...educationData];
-    updatedEducationData[editingIndex] = newEducation;
-    onEducationChange(updatedEducationData);
-    setEditingIndex(null);
-    setSavedEducations(updatedSavedEducations);
-    console.log("Saved educations after removal:", updatedSavedEducations);
-
-    // Set the 'isAddingNew' state to true to switch to edit mode
-    setIsAddingNew(true);
-    console.log("Switching to edit mode");
-
-    // Editing an existing education entry
-    */
   }
-
-  /*function handleEdit(index) {
-    // Retrieve the education entry to be edited
-    const educationToEdit = savedEducation[index];
-    setEditingIndex(index);
-    setOriginalEducation(educationToEdit);
-    // Set the form fields with the values from the selected education entry
-    setNewEducation({
-      school: educationToEdit.school,
-      degree: educationToEdit.degree,
-      schoolAddress: educationToEdit.schoolAddress,
-      schoolStartDate: educationToEdit.schoolStartDate,
-      schoolEndDate: educationToEdit.schoolEndDate,
-    });
-
-    //setNewEducation(educationData.index);
-    setNewEducation(educationToEdit);
-
-    // Remove the selected education entry from the savedEducations array
-    const updatedSavedEducations = [...savedEducation];
-    updatedSavedEducations.splice(index, 1);
-    setSavedEducations(updatedSavedEducations);
-
-    // Set the 'isAddingNew' state to true to switch to edit mode
-    setIsAddingNew(true);
-  }*/
 
   function handleCancel() {
     if (editingIndex !== null) {

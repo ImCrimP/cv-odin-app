@@ -1,32 +1,11 @@
 import "../App.css";
 import useState from "react";
+import App from "../App";
 
 export default function Display(props) {
   const { name, email, phone, address, educationData, experienceData } = props;
 
-  /*
-<p>
-            <b>{degree},</b> {school}
-          </p>
-
-          <p>
-            {schoolStartDate} - {schoolEndDate}
-          </p>
-          <p>{schoolAddress}</p>
-
-
-
-   <p>
-            <b>{company},</b> {position}
-          </p>
-
-          <p>
-            {experienceStartDate} - {experienceEndDate}
-          </p>
-          <p>{companyAddress}</p>
-
-          <p>{description}</p>
-  */
+  console.log(name, email, phone, address);
 
   return (
     <div id="display">

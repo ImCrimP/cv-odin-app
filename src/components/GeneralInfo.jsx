@@ -16,7 +16,7 @@ export default function GeneralInfo(props) {
     };
     console.log("updated data", updatedData);
     props.onSubmit(updatedData);
-    console.log("props", props);
+    console.log("props", props.data);
   };
 
   return (
