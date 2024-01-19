@@ -12,7 +12,16 @@ export default function Display(props) {
     <div id="display">
       <div id="personalInfoContainer">
         <h1 id="NameDisplay">{name}</h1>
-        <div id="infoNoName">
+        <div
+          className={`${
+            name.length > 0 ||
+            email.length > 0 ||
+            phone.length > 0 ||
+            address.length > 0
+              ? "infoNoName"
+              : ""
+          }`}
+        >
           <p>{email}</p>
           <p>{phone}</p>
           <p>{address}</p>
@@ -20,9 +29,13 @@ export default function Display(props) {
       </div>
 
       <div id="educationContainer">
-        <h1 id="educationDisplay" className="eduExpHeader bold">
-          Education
-        </h1>
+        {educationData.length > 0 ? (
+          <h2 id="educationDisplay" className="eduExpHeader bold">
+            Education
+          </h2>
+        ) : (
+          <p></p>
+        )}
         <div id="educationInfo">
           {educationData && educationData.length > 0 ? (
             educationData.map((education, index) => (
@@ -37,15 +50,20 @@ export default function Display(props) {
               </div>
             ))
           ) : (
-            <p>No education data available.</p>
+            <p></p>
           )}
         </div>
       </div>
 
       <div id="experienceContainer">
-        <h1 id="experienceDisplay" className="eduExpHeader bold">
-          Experience
-        </h1>
+        {educationData.length > 0 ? (
+          <h2 id="experienceDisplay" className="eduExpHeader bold">
+            Experience
+          </h2>
+        ) : (
+          <p></p>
+        )}
+
         <div id="experienceInfo">
           {experienceData && experienceData.length > 0 ? (
             experienceData.map((experience, index) => (
@@ -62,7 +80,7 @@ export default function Display(props) {
               </div>
             ))
           ) : (
-            <p>No experience data available.</p>
+            <p></p>
           )}
         </div>
       </div>
